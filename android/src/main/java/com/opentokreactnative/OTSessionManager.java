@@ -74,7 +74,15 @@ public class OTSessionManager extends ReactContextBaseJavaModule
     @ReactMethod
     public void initSession(String apiKey, String sessionId) {
 
-        Session mSession = new Session.Builder(this.getReactApplicationContext(), apiKey, sessionId).build();
+        Session mSession = new Session.Builder(this.getReactApplicationContext(), apiKey, sessionId)
+            // add session options
+            .sessionOptions(new Session.SessionOptions() {
+                @Override
+                public boolean useTextureViews() {
+                    return true;
+                }
+            })
+            .build();
         mSession.setSessionListener(this);
         mSession.setSignalListener(this);
         mSession.setConnectionListener(this);
@@ -318,7 +326,7 @@ public class OTSessionManager extends ReactContextBaseJavaModule
         } else {
             callback.invoke("There was an error sending the signal. The native session instance could not be found.");
         }
-        
+
     }
 
     @ReactMethod
